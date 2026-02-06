@@ -138,7 +138,13 @@ interface UserQuizAttemptRepo extends JpaRepository<UserQuizAttempt, Long> {
                            userAttrs.user_id_for_display as userIdForDisplay,
                            ut.value                      as userTag, 
                            userAttrs.first_name          as firstName,
-                           userAttrs.last_name           as lastName
+                           userAttrs.last_name           as lastName,
+                           (SELECT COUNT(*) 
+                            FROM user_quiz_question_attempt qAttempt 
+                            INNER JOIN quiz_question_definition qDef ON qAttempt.quiz_question_definition_ref_id = qDef.id
+                            WHERE qAttempt.user_quiz_attempt_ref_id = quizAttempt.id 
+                            AND qAttempt.status = 'NEEDS_GRADING'
+                            AND qDef.attributes->>'textInputAiGradingConf' IS NOT NULL) as numNeedsAiGrading
                     from user_quiz_attempt quizAttempt,
                          quiz_definition quizDef,
                          user_attrs userAttrs

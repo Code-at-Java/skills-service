@@ -28,4 +28,5 @@ interface QuizRun {
     String getFirstName()
     String getLastName()
     String getQuizType()
+    Integer getNumNeedsAiGrading()
 }
