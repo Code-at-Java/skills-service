@@ -454,6 +454,12 @@
         </dependency>
 
 
+    
+      <dependency>
+        <groupId>io.github.arther1228</groupId>
+        <artifactId>maven-release-demo</artifactId>
+        <version>0.0.1-RELEASE</version>
+      </dependency>
     </dependencies>
 
     <build>

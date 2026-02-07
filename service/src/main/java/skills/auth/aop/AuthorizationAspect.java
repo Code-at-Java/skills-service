@@ -15,8 +15,10 @@
  */
 package skills.auth.aop;
 
-import callStack.profiler.Profile;
-import groovy.util.logging.Slf4j;
+import static skills.auth.AuthUtils.getRequestAttributes;
+
+import java.util.Collection;
+
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,21 +32,25 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.stereotype.Component;
-import skills.auth.UserInfo;
+import org.springframework.web.context.request.RequestAttributes;
+
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
+
+import callStack.profiler.Profile;
+import groovy.util.logging.Slf4j;
 import skills.auth.UserInfoService;
 import skills.auth.UserSkillsGrantedAuthority;
 import skills.controller.request.model.SkillEventRequest;
 import skills.storage.model.auth.RoleName;
 
-import java.util.Collection;
-
-import static skills.auth.AuthUtils.RequestAttributes;
-import static skills.auth.AuthUtils.getRequestAttributes;
-
 @Aspect
 @Component
 @Slf4j
 class AuthorizationAspect {
+
+    public static String getUSER_ID_PARAM() {
+        return USER_ID_PARAM;
+    }
     private Logger log = LoggerFactory.getLogger(AuthorizationAspect.class);
     private static final String USER_ID_PARAM = "userIdParam";
     private static final String SKILL_EVENT_REQUEST_PARAM = "skillEventRequest";
