@@ -15,8 +15,6 @@
  */
 package skills.auth.aop;
 
-import static skills.auth.AuthUtils.getRequestAttributes;
-
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +33,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 
 import com.nimbusds.openid.connect.sdk.claims.UserInfo;
+import com.yang.maven.release.demo.service.UserInfoService;
 
 import callStack.profiler.Profile;
 import groovy.util.logging.Slf4j;
@@ -122,10 +121,13 @@ class AuthorizationAspect {
                 break paramLoop;
             } else if (SKILL_EVENT_REQUEST_PARAM.equalsIgnoreCase(paramName)) {
                 if (args != null && args.length > i && args[i] != null) {
+                  
+                  
                     SkillEventRequest request = (SkillEventRequest) args[i];
                     userId = request.getUserId();
                 }
             }
+
         }
         if (StringUtils.isBlank(userId)) {
             for (Object arg : args) {
