@@ -15,8 +15,9 @@
  */
 package skills.controller;
 
-import callStack.profiler.CProf;
-import groovy.lang.Closure;
+import java.util.Date;
+import java.util.Locale;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -24,7 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import skills.PublicProps;
+
+import callStack.profiler.CProf;
+import groovy.lang.Closure;
 import skills.auth.UserInfoService;
 import skills.controller.exceptions.ErrorCode;
 import skills.controller.exceptions.SkillException;
@@ -34,9 +37,6 @@ import skills.services.ProjectErrorService;
 import skills.services.events.SkillEventResult;
 import skills.services.events.SkillEventsService;
 import skills.utils.RetryUtil;
-
-import java.util.Date;
-import java.util.Locale;
 
 @Component
 public class AddSkillHelper {

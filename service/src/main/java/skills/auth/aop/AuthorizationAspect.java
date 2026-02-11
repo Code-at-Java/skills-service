@@ -17,6 +17,7 @@ package skills.auth.aop;
 
 import callStack.profiler.Profile;
 import groovy.util.logging.Slf4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,6 +31,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
+
 import skills.auth.UserInfo;
 import skills.auth.UserInfoService;
 import skills.auth.UserSkillsGrantedAuthority;
@@ -38,8 +41,9 @@ import skills.storage.model.auth.RoleName;
 
 import java.util.Collection;
 
+import static org.springframework.web.context.request.RequestContextHolder.getRequestAttributes;
+
 import static skills.auth.AuthUtils.RequestAttributes;
-import static skills.auth.AuthUtils.getRequestAttributes;
 
 @Aspect
 @Component
@@ -77,7 +81,7 @@ class AuthorizationAspect {
             for (GrantedAuthority grantedAuthority : authorities) {
                 UserSkillsGrantedAuthority userSkillsGrantedAuthority = (UserSkillsGrantedAuthority) grantedAuthority;
                 RoleName roleName = userSkillsGrantedAuthority.getRole().getRoleName();
-                String projectId = requestAttributes.getProjectId();
+                String projectId = ((Object) requestAttributes).getProjectId();
                 boolean projectBasedRole = roleName.equals(RoleName.ROLE_PROJECT_ADMIN) || roleName.equals(RoleName.ROLE_PROJECT_APPROVER) || roleName.equals(RoleName.ROLE_SUPER_DUPER_USER);
                 if (StringUtils.isNotBlank(projectId) && projectBasedRole) {
                     foundRole = true;
